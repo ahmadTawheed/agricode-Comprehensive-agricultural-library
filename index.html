@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AGRICODE - إدارة المقالات الزراعية</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+        <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-77TRNX20NM"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-77TRNX20NM');
+</script>
+    
+    <style>
+        :root {
+            --primary-green: #2d6a4f;
+            --secondary-green: #40916c;
+            --light-green: #52b788;
+            --accent-brown: #bc6c25;
+            --light-brown: #dda15e;
+            --bg-light: #f8f9fa;
+            --text-dark: #212529;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        /* Header Styles */
+        .main-header {
+            background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+            color: white;
+            padding: 1rem 0;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo i {
+            color: var(--light-brown);
+        }
+
+        .back-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid white;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .back-btn:hover {
+            background: white;
+            color: var(--primary-green);
+            transform: translateX(-5px);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(135deg, rgba(45, 106, 79, 0.1), rgba(64, 145, 108, 0.1));
+            padding: 3rem 0;
+            text-align: center;
+        }
+
+        .hero-content h1 {
+            font-size: 2.5rem;
+            color: var(--primary-green);
+            margin-bottom: 1rem;
+            animation: fadeInDown 1s ease;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+            animation: fadeInUp 1s ease;
+        }
+
+        /* Search and Filter Section */
+        .search-filter-section {
+            background: white;
+            padding: 2rem 0;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 80px;
+            z-index: 999;
+        }
+
+        .search-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .search-box {
+            flex: 1;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.8rem 1rem 0.8rem 3rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--light-green);
+            box-shadow: 0 0 0 3px rgba(82, 183, 136, 0.1);
+        }
+
+        .search-box i {
+            position: absolute;
+            right: 1.2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+        }
+
+        .filter-btn {
+            background: var(--primary-green);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .filter-btn:hover {
+            background: var(--secondary-green);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        /* Sidebar Filter */
+        .sidebar-filter {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 400px;
+            height: 100vh;
+            background: white;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            transition: right 0.3s ease;
+            z-index: 1001;
+            overflow-y: auto;
+        }
+
+        .sidebar-filter.active {
+            right: 0;
+        }
+
+        .sidebar-header {
+            background: var(--primary-green);
+            color: white;
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sidebar-header h3 {
+            margin: 0;
+            font-size: 1.3rem;
+        }
+
+        .close-sidebar {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .close-sidebar:hover {
+            transform: rotate(90deg);
+        }
+
+        .filter-content {
+            padding: 2rem;
+        }
+
+        .filter-group {
+            margin-bottom: 2rem;
+        }
+
+        .filter-group h4 {
+            color: var(--primary-green);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .category-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+        }
+
+        .category-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: background 0.3s ease;
+            cursor: pointer;
+        }
+
+        .category-item:hover {
+            background: rgba(82, 183, 136, 0.1);
+        }
+
+        .category-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--light-green);
+        }
+
+        .category-item label {
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin: 0;
+            flex: 1;
+        }
+
+        /* Overlay */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Articles Section */
+        .articles-section {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 1rem;
+        }
+
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .article-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        .article-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .article-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .article-content {
+            padding: 1.5rem;
+        }
+
+        .article-title {
+            font-size: 1.2rem;
+            color: var(--primary-green);
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .article-title:hover {
+            color: var(--secondary-green);
+            text-decoration: underline;
+        }
+
+        .article-description {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .article-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        .article-author {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .article-author i {
+            color: var(--light-green);
+        }
+
+        .article-tag {
+            background: rgba(82, 183, 136, 0.1);
+            color: var(--primary-green);
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .read-more-btn {
+            background: var(--primary-green);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.5rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            font-weight: 500;
+        }
+
+        .read-more-btn:hover {
+            background: var(--secondary-green);
+            transform: translateX(5px);
+        }
+
+        /* No Results */
+        .no-results {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }
+
+        .no-results i {
+            font-size: 4rem;
+            color: #ddd;
+            margin-bottom: 1rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+
+            .search-container {
+                flex-direction: column;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+
+            .sidebar-filter {
+                width: 100%;
+                right: -100%;
+            }
+
+            .articles-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .category-list {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid var(--light-green);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="main-header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-seedling"></i>
+                AGRICODE
+            </div>
+            <a href="https://ahmadtawheed.github.io/note-farmer/" class="back-btn" onclick="goBack()">
+                <i class="fas fa-arrow-right"></i>
+                رجوع
+            </a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1>مكتبة المقالات الزراعية</h1>
+            <p>اكتشف أحدث المقالات والمعلومات المتخصصة في المجال الزراعي من مصادر موثوقة</p>
+        </div>
+    </section>
+
+    <!-- Search and Filter Section -->
+    <section class="search-filter-section">
+        <div class="search-container">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="ابحث عن مقالات...">
+            </div>
+            <button class="filter-btn" onclick="toggleSidebar()">
+                <i class="fas fa-filter"></i>
+                فلترة
+            </button>
+        </div>
+    </section>
+
+    <!-- Sidebar Filter -->
+    <div class="sidebar-filter" id="sidebarFilter">
+        <div class="sidebar-header">
+            <h3>فلترة المقالات</h3>
+            <button class="close-sidebar" onclick="toggleSidebar()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="filter-content">
+            <div class="filter-group">
+                <h4>اختر الفئات</h4>
+                <div class="category-list" id="categoryList">
+                    <!-- Categories will be generated by JavaScript -->
+                </div>
+            </div>
+            <button class="read-more-btn" onclick="applyFilters()">
+                تطبيق الفلترة
+            </button>
+        </div>
+    </div>
+
+    <!-- Overlay -->
+    <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+    <!-- Articles Section -->
+    <section class="articles-section">
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p class="mt-3">جاري تحميل المقالات...</p>
+        </div>
+        <div class="articles-grid" id="articlesGrid">
+            <!-- Articles will be generated by JavaScript -->
+        </div>
+        <div class="no-results" id="noResults" style="display: none;">
+            <i class="fas fa-search"></i>
+            <h3>لا توجد نتائج</h3>
+            <p>حاول تغيير معايير البحث أو الفلترة</p>
+        </div>
+    </section>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Categories data
+        const categories = [
+            'أمراض النبات', 'مبيدات', 'حشرات', 'حيوانات', 'دواجن', 'أسماك', 
+            'محاصيل', 'خضر', 'فاكهة', 'زينة', 'الحدائق', 'أراضي', 
+            'الصناعات الغذائية', 'تكنولوجيا الألبان', 'سلامة الغذاء', 
+            'الوراثة', 'الميكروبيولوجيا الزراعية', 'هندسة الجينات', 
+            'الاقتصاد الزراعي', 'التسويق الزراعي', 'الإرشاد الزراعي', 
+            'الاجتماع الريفي', 'الآلات الزراعية', 'هندسة النظم الزراعية', 
+            'هندسة الطاقة الزراعية', 'الزراعة الرقمية', 'فسيولوجيا النبات','تغذية النبات'
+        ];
+
+        // Sample articles data
+        const articles = [
+            {
+                id: 1,
+                title: "أساسيات علم الخلية النباتية",
+                description: "استكشف كيف يمكن لفهم أعمق لأصغر وحدة في النبات أن يمنحك رؤى استشارية متقدمة لحل أكبر تحديات الحقل.",
+                author: "م. أحمد محمد",
+                date: "2025-08-19",
+                category: "فسيولوجيا النبات",
+                image: "https://scontent.fcai19-12.fna.fbcdn.net/v/t39.30808-6/536277806_122100445544982369_3185232023596010842_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=833d8c&_nc_ohc=1DsfL1S1GH8Q7kNvwFoIW-I&_nc_oc=AdlotcJO5yohXxs0VUjLFfm_cPNxQiU1kZt_fDVSghM4w-PdZYkLzrx6Chkx-gqoCgo&_nc_zt=23&_nc_ht=scontent.fcai19-12.fna&_nc_gid=2RFbXExPGp9G0-aYfrG-iw&oh=00_AfbQU20DaAgiKbjFwl7NB3-H50OMwueJkwp3F-9i4COYzA&oe=68C2847E",
+                link: "https://thamra-tech.github.io/Plant-cell-guide/"
+            },
+            {
+                id: 2,
+                title: "خواص الماء والمحاليل",
+                description: "دليل المهندس الزراعي التفاعلي فهم خواص الماء والمحاليل لتطبيقات حقلية ناجحة.",
+                author: "م. أحمد محمد",
+                date: "2025-08-20",
+                category: "فسيولوجيا النبات",
+                image: "https://scontent.fcai19-12.fna.fbcdn.net/v/t39.30808-6/536285099_122101099256982369_8030506975994596846_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=833d8c&_nc_ohc=KAQXhn9-mQoQ7kNvwGKKB5F&_nc_oc=Adn_rv8ArriqKKlQUGkw_G1Xx_Lupr3uKO4E2WXhSa3VuoByByF7nkW5tMZcgtpIZcw&_nc_zt=23&_nc_ht=scontent.fcai19-12.fna&_nc_gid=Qq6tX900AOueeqC0pA5xyg&oh=00_Afbk66Z9mPPA7AN97yKZoXIos6GtvW5IEo-TAxqV89dEqg&oe=68C26DA1",
+                link: "https://thamra-tech.github.io/Properties-of-water-and-solutions/"
+            },
+            {
+                id: 3,
+                title: "دليل تفاعلي لمغذيات النبات",
+                description: "العنصر الغذائي الأساسي هو الذي لا يمكن للنبات إكمال دورة حياته بدونه.",
+                author: "م. أحمد محمد",
+                date: "2025-07-11",
+                category: "تغذية النبات",
+                image: "https://scontent.fcai19-12.fna.fbcdn.net/v/t39.30808-6/518174415_706965632321930_5135188853870017159_n.jpg?stp=dst-jpg_p526x296_tt6&_nc_cat=105&ccb=1-7&_nc_sid=833d8c&_nc_ohc=X702eE5ggoIQ7kNvwGoTbMg&_nc_oc=AdmKqd87j_jAbs2dC-5L2qrrwdiP9chpIQOpzf6xlwcRBkms2gcWVzSRNAASxI7z5RE&_nc_zt=23&_nc_ht=scontent.fcai19-12.fna&_nc_gid=Qq6tX900AOueeqC0pA5xyg&oh=00_Afbvd4cGmQDZOlXRmSj9BnfTcqPJQrnQGEpJ7GCFOpw6Ew&oe=68C26DB7",
+                link: "https://ahmadtawheed.github.io/Plant-nutrition/"
+            },
+            {
+                id: 4,
+                title: "دليل الزراعة الشامل",
+                description: "الخطوات الصحيحة والمعلومات الأساسية لزراعة أي نبات أو محصول بنجاح.",
+                author: "م. احمد محمد",
+                date: "2025-07-12",
+                category: "محاصيل",
+                image: "https://scontent.fcai19-12.fna.fbcdn.net/v/t39.30808-6/518174415_706965632321930_5135188853870017159_n.jpg?stp=dst-jpg_p526x296_tt6&_nc_cat=105&ccb=1-7&_nc_sid=833d8c&_nc_ohc=X702eE5ggoIQ7kNvwGoTbMg&_nc_oc=AdmKqd87j_jAbs2dC-5L2qrrwdiP9chpIQOpzf6xlwcRBkms2gcWVzSRNAASxI7z5RE&_nc_zt=23&_nc_ht=scontent.fcai19-12.fna&_nc_gid=Qq6tX900AOueeqC0pA5xyg&oh=00_Afbvd4cGmQDZOlXRmSj9BnfTcqPJQrnQGEpJ7GCFOpw6Ew&oe=68C26DB7",
+                link: "https://ahmadtawheed.github.io/steps-grow-plants/#"
+            },
+            {
+                id: 5,
+                title: "المبادئ الأساسية للكيمياء الفيزيائية",
+                description: "يُعد دور المهندس الزراعي في إدارة النظم الإنتاجية المعقدة في الحقل أمرًا محوريًا لتحقيق الأمن الغذائي والاستدامة.",
+                author: "م. أحمد محمد",
+                date: "2025-08-21",
+                category: "فسيولوجيا النبات",
+                image: "https://scontent.fcai19-12.fna.fbcdn.net/v/t39.30808-6/537509632_122101699988982369_7560869259603500639_n.jpg?stp=dst-jpg_p526x296_tt6&_nc_cat=100&ccb=1-7&_nc_sid=833d8c&_nc_ohc=9M9SKXDJTIQQ7kNvwFkvbLk&_nc_oc=AdluR3ppoCDauHU1mXRMZTSMCh40fvkUV_0K7r1y3PD8oUWhd7a-Y9AynaUIX2mLRU8&_nc_zt=23&_nc_ht=scontent.fcai19-12.fna&_nc_gid=tANgWmt3TelXmjrZ0EbHHw&oh=00_AfZdP_wMtK-jZF_YNFgJlafsvzndnOi4S_B2NPaYbQ2__g&oe=68C27C5E",
+                link: "https://thamra-tech.github.io/Fundamentals-of-Physical-Chemistry/"
+            },
+            {
+                id: 6,
+                title: "دليل فسيولوجيا النبات الحقلي",
+                description: "يُعد أداة تفاعلية للمهندس الزراعي لفهم وإدارة العلاقات المائية للنبات.",
+                author: "م. أحمد محمد",
+                date: "2025-08-21",
+                category: "فسيولوجيا النبات",
+                image: "https://scontent.fcai19-12.fna.fbcdn.net/v/t39.30808-6/536283750_122102112590982369_1638830859694599499_n.jpg?stp=dst-jpg_p526x296_tt6&_nc_cat=106&ccb=1-7&_nc_sid=833d8c&_nc_ohc=gCS_PzYc_tUQ7kNvwEZ5wCg&_nc_oc=Adk9SAh1BvHtHi14n0Ldi1ie0PqbT4kxsn3N-Lh8z2ThFZy_WmmCa67ooVN-3UY-Ags&_nc_zt=23&_nc_ht=scontent.fcai19-12.fna&_nc_gid=tANgWmt3TelXmjrZ0EbHHw&oh=00_AfbxWaYWM6m34XLDHSiaThmO41VXQWBnAqIOhLvBztbAhw&oe=68C28255",
+                link: "https://thamra-tech.github.io/Plant-water-management/"
+            },
+            {
+                id: 7,
+                title: "فسيولوجيا الثغور: من الخلية إلى الحقل",
+                description: "أداة تفاعلية مصممة للمهندس الزراعي لفهم سلوك الثغور النباتية وكيفية استغلال هذه المعرفة لتحسين إدارة المياه والتغذية.",
+                author: "م. أحمد محمد",
+                date: "2025-08-23",
+                category: "فسيولوجيا النبات",
+                image: "https://scontent.fcai19-12.fna.fbcdn.net/v/t39.30808-6/538211670_122103585452982369_8440582266785423427_n.jpg?stp=dst-jpg_p526x296_tt6&_nc_cat=105&ccb=1-7&_nc_sid=833d8c&_nc_ohc=lHJ8WYl7og0Q7kNvwFKzMdq&_nc_oc=Adk-0klOTB2iZfM_M1lnzCxHmhulFb0IxprjDQYrRnFyxwlP0TiGGvRFO2F2N1vaH9I&_nc_zt=23&_nc_ht=scontent.fcai19-12.fna&_nc_gid=oudp36V_NfUajfsTQVYadw&oh=00_AfZj4ubz2zrQoy5WA3dEZQtIrBNiGhpzWe5io_W9uAEFRQ&oe=68C26B34",
+                link: "https://thamra-tech.github.io/Physiology-of-stomata/"
+            },
+            {
+                id: 8,
+                title: "دليل فسيولوجيا النبات التطبيقي",
+                description: " دليل فسيولوجيا النبات التطبيقي من النظرية الي التطبيق الحقلي للمهندس الزراعي لفهم أساسيات حياة النبات والنمو والتطور والطاقة والتقنيات والمقاومة والحركة في انبات.",
+                author: "م. أحمد محمد",
+                date: "2025-08-31",
+                category: "فسيولوجيا النبات",
+                image: "https://scontent.fcai19-12.fna.fbcdn.net/v/t39.30808-6/540776749_122109881522982369_7293289271134397735_n.jpg?stp=dst-jpg_p526x296_tt6&_nc_cat=110&ccb=1-7&_nc_sid=833d8c&_nc_ohc=UwiLakzCnrwQ7kNvwGwHdlx&_nc_oc=AdnOcy5hYkEbqELqwTiF286i_ugZ8h3s6FTZulIywO2TqQhBHQckIGxcKCWPh3bKmqE&_nc_zt=23&_nc_ht=scontent.fcai19-12.fna&_nc_gid=GASid7nniooSzQUSf723fg&oh=00_AfXNyfGYnIzwu8AUcvkrQaxT-G45Tyu5wdtAToWbNGDMyw&oe=68BCA22A",
+                link: "https://ahmadtawheed.github.io/Applied-Physiology-Guide/"
+            },
+            {
+                id: 9,
+                title: "الدليل الحقلي لأمراض النبات",
+                description: "أداة تفاعلية للمهندس الزراعي لفهم وتشخيص ومكافحة أمراض النبات بفعالية.",
+                author: "م. أحمد محمد",
+                date: "2025-09-1",
+                category: "أمراض النبات",
+                image: "https://scontent.fcai19-12.fna.fbcdn.net/v/t39.30808-6/541429100_122110105238982369_1563589364731158262_n.jpg?stp=dst-jpg_p552x414_tt6&_nc_cat=103&ccb=1-7&_nc_sid=833d8c&_nc_ohc=dn5haNcJQxIQ7kNvwGYY2ps&_nc_oc=AdmF-43p0IbvgQraMOKr54271n7KRBizP_DYvBK8uvFHf3eKOEydeMCF0bBIOjAx8Wk&_nc_zt=23&_nc_ht=scontent.fcai19-12.fna&_nc_gid=oudp36V_NfUajfsTQVYadw&oh=00_AfZ4TGATxQnnwLPZG0iYbz_W-UmsSQzm5a7JfeU1XMgiEA&oe=68C26B7A",
+                link: "https://ahmadtawheed.github.io/Control-of-plant-diseases/"
+            },
+            {
+                id: 10,
+                title: "دليلك الشامل للمبيدات الزراعية ومكافحة الآفات",
+                description: "تُعَدّ مكافحة الآفات الزراعية ركيزة أساسية لضمان الأمن الغذائي وحماية جودة المحاصيل، وتتطلب فهماً عميقاً وشاملاً للنظام البيئي الزراعي.",
+                author: "م. أحمد محمد",
+                date: "2025-09-3",
+                category: "مبيدات",
+                image: "https://www.shorouknews.com/uploadedimages/Other/original/1502363535_445_107898_769664300604.jpg",
+                link: "https://ahmadtawheed.github.io/Agricultural-pest-control-thamra/"
+            },
+            {
+                id: 11,
+                title: "تطبيق الممارسات الزراعية المستدامة والآمنة",
+                description: "يُعد المهندس الزراعي في الميدان حجر الزاوية في تطبيق الممارسات الزراعية المستدامة والآمنة. إن دوره يتجاوز مجرد إرشاد المزارعين، فهو يمثل حلقة الوصل بين العلوم النظرية في المختبر والتطبيق العملي في الحقل.",
+                author: "م. أحمد محمد",
+                date: "2025-09-6",
+                category: "مبيدات",
+                image: "https://alfallahalyoum.news/wp-content/uploads/2019/07/1-124.jpg",
+                link: "https://thamra-tech.github.io/Pesticide-Science-and-Legislation/"
+            },
+                {
+                id: 12,
+                title: "إدارة الآفات تعد الركيزة الأساسية لضمان استدامة الإنتاج الزراعي",
+                description: "لم يعد دور المهندس الزراعي في الحقل يقتصر على مجرد تطبيق التوصيات الفنية أو رش المبيدات بشكل روتيني، بل تحول إلى منصب قيادي واستراتيجي يتطلب فهمًا عميقًا ودقيقًا للنظام البيئي الزراعي.",
+                author: "م. أحمد محمد",
+                date: "2025-09-6",
+                category: "مبيدات",
+                image: "https://cdn.salla.sa/RPWWV/1B7PUN8yiOLmtqWgBftA8zDj4cSQjQeFDecDyYfF.jpg",
+                link: "https://thamra-tech.github.io/The-strategic-importance-of-pesticide-foundations/"
+            },
+                {
+                id: 13,
+                title: "أهمية المبيدات الاكاروسية والديدان الخيطية",
+                description: "يواجه المهندس الزراعي في الحقل تحديات متعددة لضمان إنتاجية عالية ومستدامة للمحاصيل. وفي ظل التطورات الزراعية الحديثة، لم يعد الاعتماد على المكافحة الكيميائية كحل وحيد هو الخيار الأمثل. بل أصبح من الضروري تبني نهج شامل يُعرف بـ 'الإدارة المتكاملة للآفات.",
+                author: "م. أحمد محمد",
+                date: "2025-09-6",
+                category: "مبيدات",
+                image: "https://www.zatonaz.com/storage/images/posts/Screenshot_2023_0123_235617.jpg",
+                link: "https://thamra-tech.github.io/The-importance-of-acaricides-and-nematicides/"
+            },
+                {
+                id: 14,
+                title: "مكافحة القوارض والرخويات",
+                description: "يتجاوز دور المهندس الزراعي الحديث مجرد تطبيق المبيدات الكيميائية. فهو مدير المحاصيل الذي يضطلع بمسؤولية حماية الإنتاج الزراعي مع الحفاظ على التوازن البيئي، وضمان سلامة الغذاء، وحماية صحة الإنسان.",
+                author: "م. أحمد محمد",
+                date: "2025-09-6",
+                category: "مبيدات",
+                image: "https://sa.alraayida.com/files/%D9%85%D9%83%D8%A7%D9%81%D8%AD%D8%A9-%D8%A7%D9%84%D8%AD%D8%B4%D8%B1%D8%A7%D8%AA.webp",
+                link: "https://thamra-tech.github.io/Rodent-and-slug-control/"
+            },
+                {
+                id: 15,
+                title: "مبيدات الأعشاب ومبيدات الأمراض النباتية",
+                description: "يقدم هذا التقرير تحليلاً شاملاً لدور المبيدات الزراعية، مع التركيز على مبيدات الأعشاب ومبيدات الأمراض النباتية، ويهدف إلى تسليط الضوء على الأهمية الحيوية لهذه المعرفة للمهندس الزراعي في الميدان.",
+                author: "م. أحمد محمد",
+                date: "2025-09-6",
+                category: "مبيدات",
+                image: "https://www.rgh.com.sa/wp-content/uploads/2022/12/-%D8%A7%D9%84%D8%AD%D8%B4%D8%B1%D9%8A%D8%A9-1024x576-1-e1670238022154.jpg",
+                link: "https://thamra-tech.github.io/herbicides-and-plant-pathogens/"
+            },
+            // أراضي
+            {
+                id: 16,
+                title: "الزراعة العمودية",
+                description: "يواجه القطاع الزراعي العالمي تحديات غير مسبوقة تضع الأمن الغذائي تحت ضغط متزايد. تشمل هذه التحديات شح الموارد المائية، وتقلص الأراضي الزراعية الصالحة للاستخدام، والآثار المدمرة للتغيرات المناخية مثل الجفاف والفيضانات التي تهدد المحاصيل.",
+                author: "م. أحمد محمد",
+                date: "2025-09-6",
+                category: "أراضي",
+                image: "https://albilad.s3.me-south-1.amazonaws.com/images/news/2024/06/22/f22002029.jpg",
+                link: "https://thamra-tech.github.io/Vertical-farming/"
+            },
+            {
+                id: 17,
+                title: "أنظمة الزراعة بدون تربة",
+                description: "تُعد الزراعة بدون تربة إحدى الابتكارات الزراعية المتقدمة التي توفر حلاً فعالاً لمواجهة التحديات العالمية مثل ندرة المياه وتدهور جودة التربة. يهدف هذا الدليل إلى تزويد المهندس الزراعي في الحقل بالأسس العلمية والخطوات العملية اللازمة لتطبيق أنظمة الزراعة بدون تربة وإدارتها بكفاءة.",
+                author: "م. أحمد محمد",
+                date: "2025-09-6",
+                category: "أراضي",
+                image: "https://www.bibalex.org/SCIplanet/Attachments/Article/MediumImage/aCgTxsgDuD_20210921102827712.jpg",
+                link: "https://thamra-tech.github.io/For-soilless-cultivation/"
+            },
+            {
+                id: 18,
+                title: "الزراعة المحمية",
+                description: "تمثل الزراعة المحمية نهجاً زراعياً متطوراً يهدف إلى إنتاج المحاصيل في منشآت خاصة مثل البيوت البلاستيكية والزجاجية والشبكية، وذلك بهدف حمايتها من الظروف الجوية القاسية مثل الحرارة الشديدة، والبرد القارس، والرياح القوية، والأمطار الغزيرة، فضلاً عن الآفات الزراعية.",
+                author: "م. أحمد محمد",
+                date: "2025-09-6",
+                category: "أراضي",
+                image: "https://misrelzraea.com/wp-content/uploads/2022/03/%D8%A7%D9%84%D8%B2%D8%B1%D8%A7%D8%B9%D8%A9-%D8%A7%D9%84%D9%85%D8%AD%D9%85%D9%8A%D8%A9.jpg",
+                link: "https://thamra-tech.github.io/Green-houses/"
+            },
+            {
+                id: 19,
+                title: "زراعة الأسطح والشرفات",
+                description: "تُعد الزراعة المنزلية، وخاصة زراعة الأسطح والشرفات، أكثر من مجرد هواية؛ فهي تمثل مختبرًا مصغرًا للابتكار الزراعي المستدام. هذا التقرير يهدف إلى تحليل المعارف والتقنيات المستخدمة في هذه الممارسات الدقيقة، وتوضيح كيفية ترجمة المهندس الزراعي لهذه الخبرات إلى استراتيجيات فعّالة وقابلة للتطبيق على نطاق واسع في الزراعة الحقلية التقليدية.",
+                author: "م. أحمد محمد",
+                date: "2025-09-6",
+                category: "الاقتصاد الزراعي",
+                image: "https://media.elwatannews.com/media/img/mediaarc/large/15689464741540070915.jpg",
+                link: "https://thamra-tech.github.io/Home-farming/"
+            },
+        ];
+
+        // Generate more sample articles
+        function generateMoreArticles() {
+            const moreArticles = [];
+            for (let i = 7; i <= 20; i++) {
+                const randomCategory = categories[Math.floor(Math.random() * categories.length)];
+                moreArticles.push({
+                    id: i,
+                    title: `مقالة زراعية ${i} في مجال ${randomCategory}`,
+                    description: "هذا وصف تجريبي للمقالة الزراعية التي تتناول موضوعات متعددة في المجال الزراعي والتقنيات الحديثة.",
+                    author: `كاتب ${i}`,
+                    date: `2024-01-${String(21 - i).padStart(2, '0')}`,
+                    category: randomCategory,
+                    image: `https://picsum.photos/seed/article${i}/400/200`,
+                    link: `#`
+                });
+            }
+            return moreArticles;
+        }
+
+        // Combine all articles
+        const allArticles = [...articles, ...generateMoreArticles()];
+
+        let filteredArticles = [...allArticles];
+        let selectedCategories = [];
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            generateCategories();
+            displayArticles(filteredArticles);
+            setupSearch();
+        });
+
+        // Generate categories checkboxes
+        function generateCategories() {
+            const categoryList = document.getElementById('categoryList');
+            categories.forEach(category => {
+                const categoryItem = document.createElement('div');
+                categoryItem.className = 'category-item';
+                categoryItem.innerHTML = `
+                    <input type="checkbox" id="cat-${category}" value="${category}">
+                    <label for="cat-${category}">${category}</label>
+                `;
+                categoryList.appendChild(categoryItem);
+            });
+        }
+
+        // Display articles
+        function displayArticles(articlesToDisplay) {
+            const articlesGrid = document.getElementById('articlesGrid');
+            const noResults = document.getElementById('noResults');
+            
+            if (articlesToDisplay.length === 0) {
+                articlesGrid.style.display = 'none';
+                noResults.style.display = 'block';
+                return;
+            }
+            
+            articlesGrid.style.display = 'grid';
+            noResults.style.display = 'none';
+            
+            articlesGrid.innerHTML = articlesToDisplay.map(article => `
+                <div class="article-card animate__animated animate__fadeInUp">
+                    <img src="${article.image}" alt="${article.title}" class="article-image">
+                    <div class="article-content">
+                        <h3 class="article-title" onclick="openArticle('${article.link}')">${article.title}</h3>
+                        <p class="article-description">${article.description}</p>
+                        <div class="article-meta">
+                            <div class="article-author">
+                                <i class="fas fa-user"></i>
+                                <span>${article.author}</span>
+                            </div>
+                            <div class="article-date">
+                                <i class="fas fa-calendar"></i>
+                                <span>${formatDate(article.date)}</span>
+                            </div>
+                        </div>
+                        <div class="article-tag">${article.category}</div>
+                        <button class="read-more-btn" onclick="openArticle('${article.link}')">
+                            اقرأ المزيد <i class="fas fa-arrow-left"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Format date
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            return date.toLocaleDateString('ar-SA', options);
+        }
+
+        // Toggle sidebar
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebarFilter');
+            const overlay = document.getElementById('overlay');
+            
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
+        // Apply filters
+        function applyFilters() {
+            selectedCategories = [];
+            const checkboxes = document.querySelectorAll('#categoryList input[type="checkbox"]:checked');
+            checkboxes.forEach(checkbox => {
+                selectedCategories.push(checkbox.value);
+            });
+            
+            filterArticles();
+            toggleSidebar();
+        }
+
+        // Filter articles
+        function filterArticles() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            
+            filteredArticles = allArticles.filter(article => {
+                const matchesSearch = article.title.toLowerCase().includes(searchTerm) || 
+                                    article.description.toLowerCase().includes(searchTerm);
+                const matchesCategory = selectedCategories.length === 0 || 
+                                      selectedCategories.includes(article.category);
+                
+                return matchesSearch && matchesCategory;
+            });
+            
+            displayArticles(filteredArticles);
+        }
+
+        // Setup search functionality
+        function setupSearch() {
+            const searchInput = document.getElementById('searchInput');
+            let searchTimeout;
+            
+            searchInput.addEventListener('input', function() {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    filterArticles();
+                }, 300);
+            });
+        }
+
+        // Open article
+        function openArticle(link) {
+            // Show loading
+            const loading = document.getElementById('loading');
+            loading.classList.add('active');
+            
+            // Simulate loading delay
+            setTimeout(() => {
+                loading.classList.remove('active');
+                window.open(link, '_blank');
+            }, 500);
+        }
+
+        // Go back function
+        function goBack() {
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                window.location.href = '/';
+            }
+        }
+
+        // Add smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
